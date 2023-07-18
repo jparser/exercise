@@ -29,7 +29,15 @@ async function addRemote(a: number, b: number) {
  */
 async function add(...inputs: number[]) {
   // 你的实现
+  return inputs.reduce((pc, item) => {
+    return pc.then(res => {
+      return addRemote(res, item);
+    });
+  }, Promise.resolve(0)).then(res=>{
+    document.getElementById('result')!.innerHTML = JSON.stringify(res)
+  });
 }
+
 
 function App() {
   return (
@@ -40,11 +48,15 @@ function App() {
       </header>
       <section className="App-content">
         <input type="text" placeholder="请输入要相加的数字（如1,3,4,5,6）" />
-        <button>相加</button>
+        <button onClick={()=>{
+          add(...(document.querySelector('input') as HTMLInputElement ).value.split(',').map(v=>{
+            return JSON.parse(v)
+          }))
+        }}>相加</button>
       </section>
       <section className="App-result">
         <p>
-          相加结果是：<span>{'你的实现'}</span>
+          相加结果是：<span id='result'>{'你的实现'}</span>
         </p>
       </section>
     </div>
