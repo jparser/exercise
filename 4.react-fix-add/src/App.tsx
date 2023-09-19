@@ -15,24 +15,27 @@ async function increaseRemote(a: number) {
  */
 function App() {
   const [count, setCount] = useState(0);
-  const loading = useRef(false);
+  const [isLoading,setIsLoading] = useState(false)
 
-  const increase = useCallback(async () => {
-    if (loading.current) {
+  const increase = useCallback(async (num:number) => {
+    if (isLoading) {
       return;
     }
-    loading.current = true;
-    const data = await increaseRemote(count);
-    setCount(data);
-    loading.current = false;
+    setIsLoading(true)
+    let result = count
+    //这一块最开始完全被下面的num === 2 时候调用两次increse函数给迷惑了，其实完全可以在函数内部循环调用计数器函数即可
+    for(let i = 0;i<num;i++){
+      result = await increaseRemote(result);
+    }
+    setCount(result)
+    setIsLoading(false)
   }, [count]);
 
-  const handleClick = (num) => {
+  const handleClick = (num:number) => {
     if (num === 1) {
-      increase();
+      increase(1);
     } else if (num === 2) {
-      increase();
-      increase();
+      increase(2);
     }
   };
 
@@ -43,7 +46,7 @@ function App() {
       </header>
       <section className="App-content">
         <button
-          disabled={loading.current}
+          disabled={isLoading}
           onClick={() => {
             handleClick(1);
           }}
@@ -51,7 +54,7 @@ function App() {
           +1
         </button>
         <button
-          disabled={loading.current}
+          disabled={isLoading}
           onClick={() => {
             handleClick(2);
           }}
