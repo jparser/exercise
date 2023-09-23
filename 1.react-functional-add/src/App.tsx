@@ -29,6 +29,7 @@ async function addRemote(a: number, b: number) {
  */
 async function add(...inputs: number[]) {
   // 你的实现
+  let i = 0;
 }
 
 function App() {
