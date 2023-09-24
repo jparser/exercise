@@ -6,6 +6,11 @@ async function increaseRemote(a: number) {
   return a + 1;
 }
 
+async function increaseRemoteTwo(a: number) {
+  await new Promise((resolve) => setTimeout(resolve, Math.random() * 1e3));
+  return a + 2;
+}
+
 /**
  * 下面是一个用 React 写的异步相加计数器 Demo，要求实现的功能为：
  * 1. 点击 +1 按钮数值自增 1，点击 +2 按钮数值自增 2；
@@ -27,12 +32,21 @@ function App() {
     loading.current = false;
   }, [count]);
 
-  const handleClick = (num) => {
+  const increaseTwo = useCallback(async () => {
+    if (loading.current) {
+      return;
+    }
+    loading.current = true;
+    const data = await increaseRemoteTwo(count);
+    setCount(data);
+    loading.current = false;
+  }, [count]);
+
+  const handleClick = (num: number) => {
     if (num === 1) {
       increase();
     } else if (num === 2) {
-      increase();
-      increase();
+      increaseTwo();
     }
   };
 

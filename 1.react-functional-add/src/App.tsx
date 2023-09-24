@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 /**
@@ -27,11 +27,21 @@ async function addRemote(a: number, b: number) {
  * })
  * ```
  */
-async function add(...inputs: number[]) {
-  // 你的实现
-}
 
 function App() {
+  const [val,setVal]=useState("");
+  const [sum,setSum]=useState(0);
+  const handleVal = function(e:any) {
+      setVal(e.target.value);
+  };
+  const add =function(){
+    var sum=0;
+    var inputs=val.split(',');
+    for(var i in inputs){
+      sum  = sum + parseInt(inputs[i]);
+    }
+    setSum(sum);
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -39,12 +49,12 @@ function App() {
         <div>点击相加按钮能显示最终结果</div>
       </header>
       <section className="App-content">
-        <input type="text" placeholder="请输入要相加的数字（如1,3,4,5,6）" />
-        <button>相加</button>
+        <input type="text" onChange={(e)=>handleVal(e)} placeholder="请输入要相加的数字（如1,3,4,5,6）" />
+        <button onClick={add}>相加</button>
       </section>
       <section className="App-result">
         <p>
-          相加结果是：<span>{'你的实现'}</span>
+          相加结果是：<span>{sum}</span>
         </p>
       </section>
     </div>
