@@ -11,3 +11,67 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+/* 
+body {
+  font-family: 'open sans', sans-serif;
+  font-size: 16px;
+} */
+
+table {
+  width: 100%;
+  text-align: start;
+  border-collapse: separate;
+  border-radius: 8px 8px 0 0;
+  border-spacing: 0
+}
+
+thead th {
+  text-align: start;
+  border-bottom: 1px solid #f0f0f0;
+  position: relative;
+}
+
+thead button {
+  border: 0;
+  border-radius: none;
+  font-family: inherit;
+  font-size: inherit;
+  display: flex;
+  flex: auto;
+  width: 16.6rem;
+  justify-content: space-between;
+  background-color: #fafafa;
+  color: rgba(0, 0, 0, 0.88 );
+  padding: 16px;
+  font-weight: 600;
+}
+thead button.default::after {
+  content: '▽';
+  display: inline-block;
+  margin-left: 1em;
+}
+thead button:hover {
+  background-color: #f1f0f0;
+}
+/* 👇 ☝️ */
+thead button.ascending::after {
+  content: '▼'; 
+  display: inline-block;
+  margin-left: 1em;
+}
+
+thead button.descending::after {
+  content: '▲';
+  display: inline-block;
+  margin-left: 1em;
+}
+
+tbody td {
+  padding: 0.5em;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 16px;
+}
+
+tbody tr:hover {
+  background-color: #fafafa;
+}
