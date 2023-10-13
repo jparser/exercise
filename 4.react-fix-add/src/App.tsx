@@ -1,5 +1,5 @@
-import React, { useRef, useState, useCallback } from 'react';
-import './index.css';
+import React, { useState, useCallback } from 'react';
+// import './index.css';
 
 async function increaseRemote(a: number) {
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1e3));
@@ -15,25 +15,29 @@ async function increaseRemote(a: number) {
  */
 function App() {
   const [count, setCount] = useState(0);
-  const loading = useRef(false);
+  // const loading = useRef(false);
+  const [loading, setLoading] = useState(false);
 
-  const increase = useCallback(async () => {
-    if (loading.current) {
-      return;
-    }
-    loading.current = true;
-    const data = await increaseRemote(count);
-    setCount(data);
-    loading.current = false;
+  const increase = useCallback(async (num: number) => {
+    // if (loading.current) {
+    //     return;
+    // }
+    // loading.current = true;
+    setLoading(true);
+    const data = await increaseRemote(num);
+    setCount(count + num);
+    // loading.current = false;
+    setLoading(false);
   }, [count]);
 
-  const handleClick = (num) => {
-    if (num === 1) {
-      increase();
-    } else if (num === 2) {
-      increase();
-      increase();
-    }
+  const handleClick = (num: number) => {
+    // if (num === 1) {
+    //     increase();
+    // } 
+    // if (num === 2) {
+    increase(num);
+    // increase();
+    // }
   };
 
   return (
@@ -43,18 +47,14 @@ function App() {
       </header>
       <section className="App-content">
         <button
-          disabled={loading.current}
-          onClick={() => {
-            handleClick(1);
-          }}
+          disabled={loading}
+          onClick={() => handleClick(1)}
         >
           +1
         </button>
         <button
-          disabled={loading.current}
-          onClick={() => {
-            handleClick(2);
-          }}
+          disabled={loading}
+          onClick={() => handleClick(2)}
         >
           +2
         </button>
