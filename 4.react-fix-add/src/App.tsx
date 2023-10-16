@@ -25,6 +25,7 @@ function App() {
   }, [count]);
 
   const handleClick = (num:number) => {
+    //增加step
    increase(num);
   };
 
