@@ -1,9 +1,9 @@
 import React, { useRef, useState, useCallback } from 'react';
 import './index.css';
 
-async function increaseRemote(a: number) {
+async function increaseRemote(a: number,step:number) {
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1e3));
-  return a + 1;
+  return a + step;
 }
 
 /**
@@ -17,23 +17,16 @@ function App() {
   const [count, setCount] = useState(0);
   const loading = useRef(false);
 
-  const increase = useCallback(async () => {
-    if (loading.current) {
-      return;
-    }
+  const increase = useCallback( async(num:number) => {
     loading.current = true;
-    const data = await increaseRemote(count);
+    const data =await increaseRemote(count,num);
     setCount(data);
     loading.current = false;
   }, [count]);
 
-  const handleClick = (num) => {
-    if (num === 1) {
-      increase();
-    } else if (num === 2) {
-      increase();
-      increase();
-    }
+  const handleClick = (num:number) => {
+    //增加step
+   increase(num);
   };
 
   return (

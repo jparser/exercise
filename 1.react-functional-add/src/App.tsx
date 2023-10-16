@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 /**
@@ -27,11 +27,29 @@ async function addRemote(a: number, b: number) {
  * })
  * ```
  */
-async function add(...inputs: number[]) {
+async function add(inputs: number[]) {
   // 你的实现
+  return new Promise(async(resolve,reject)=>{
+  let result=0;
+    for(let i=0;i<inputs.length;i++){
+      result=await addRemote(result,inputs[i]);
+    };
+    resolve(result);
+  })
 }
 
+
+
 function App() {
+  const [str,setStr]=useState('');
+  const [countter,setCounter]=useState(null);
+  const totalClick=async()=>{
+    const valArr:any=str.split(",").map(item=>parseFloat(item));
+    console.log(valArr)
+   const count:any=await add(valArr);
+   setCounter(count)
+   console.log(count,'count')
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -39,12 +57,12 @@ function App() {
         <div>点击相加按钮能显示最终结果</div>
       </header>
       <section className="App-content">
-        <input type="text" placeholder="请输入要相加的数字（如1,3,4,5,6）" />
-        <button>相加</button>
+        <input type="text" placeholder="请输入要相加的数字（如1,3,4,5,6）" onChange={e=>setStr(e.target.value)}/>
+        <button onClick={()=>totalClick()}>相加</button>
       </section>
       <section className="App-result">
         <p>
-          相加结果是：<span>{'你的实现'}</span>
+          相加结果是：<span>{countter}</span>
         </p>
       </section>
     </div>
