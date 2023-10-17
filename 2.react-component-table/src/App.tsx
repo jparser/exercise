@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 /**
@@ -42,11 +42,60 @@ const testData: {
     english: 89,
   },
 ];
+
+interface TableData {
+  name: string;
+  chinese: number;
+  math: number;
+  english: number;
+  [key: string]: number | string;
+}
+
+function Table({ data, initialSort }: { data: TableData[], initialSort: Record<string, boolean> }) {
+  const [sort, setSort] = useState(initialSort);
+  const [sortedData, setSortedData] = useState(data);
+
+  const compare = (key: string) => (a: TableData, b: TableData) => {
+    if (a[key] < b[key]) return sort[key] ? -1 : 1;
+    if (a[key] > b[key]) return sort[key] ? 1 : -1;
+    return 0;
+  };  
+
+  const handleHeaderClick = (key: string) => {
+    setSort({ ...sort, [key]: !sort[key] });
+    setSortedData([...data].sort(compare(key)));
+  };
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th onClick={() => handleHeaderClick('name')}>Name</th>
+          <th onClick={() => handleHeaderClick('chinese')}>Chinese</th>
+          <th onClick={() => handleHeaderClick('math')}>Math</th>
+          <th onClick={() => handleHeaderClick('english')}>English</th>
+        </tr>
+      </thead>
+      <tbody>
+        {sortedData.map((row, index) => (
+          <tr key={index}>
+            <td>{row.name}</td>
+            <td>{row.chinese}</td>
+            <td>{row.math}</td>
+            <td>{row.english}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
 function App() {
   return (
     <div className="App">
       <h1>Table 组件</h1>
       <div>使用 testData 数据在这里渲染实现的 Table 组件</div>
+      <Table data={testData} initialSort={{ name: false, chinese: false, math: false, english: false }} />
     </div>
   );
 }

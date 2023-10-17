@@ -1,9 +1,8 @@
 import React, { useRef, useState, useCallback } from 'react';
 import './index.css';
-
 async function increaseRemote(a: number) {
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1e3));
-  return a + 1;
+  return a;
 }
 
 /**
@@ -17,24 +16,30 @@ function App() {
   const [count, setCount] = useState(0);
   const loading = useRef(false);
 
-  const increase = useCallback(async () => {
-    if (loading.current) {
-      return;
-    }
-    loading.current = true;
-    const data = await increaseRemote(count);
-    setCount(data);
-    loading.current = false;
-  }, [count]);
+  const increase = useCallback( async (num: number) => {
+      if (loading.current) {
+        return;
+      }
+      loading.current = true;
+      try {
+        const res = await increaseRemote(count + num); // 根据 num 确定增加的值
+        setCount(res);
+      } finally {
+        loading.current = false;
+      }
+    },[count]);
 
-  const handleClick = (num) => {
+
+  const handleClick = async (num: number) => {
     if (num === 1) {
-      increase();
+      await increase(1);
     } else if (num === 2) {
-      increase();
-      increase();
+      await increase(2);
     }
   };
+
+
+
 
   return (
     <div className="App">
