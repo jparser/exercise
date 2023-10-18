@@ -15,14 +15,15 @@ async function increaseRemote(a: number) {
 function App() {
   const [count, setCount] = useState(0);
   const loading = useRef(false);
+  const countRef = useRef(0);
 
-  const increase = useCallback( async (num: number) => {
+  const increase = useCallback( async () => {
       if (loading.current) {
         return;
       }
       loading.current = true;
       try {
-        const res = await increaseRemote(count + num); // 根据 num 确定增加的值
+        const res = await increaseRemote(++countRef.current); // 根据 num 确定增加的值
         setCount(res);
       } finally {
         loading.current = false;
@@ -32,9 +33,10 @@ function App() {
 
   const handleClick = async (num: number) => {
     if (num === 1) {
-      await increase(1);
+      await increase();
     } else if (num === 2) {
-      await increase(2);
+      await increase();
+      await increase();
     }
   };
 
