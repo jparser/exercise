@@ -18,6 +18,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const currentCount = useRef(0);
 
+  // 此处使用useCallback没有优化效果
   const increase = async () => {
     try {
       setLoading(true);

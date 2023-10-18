@@ -58,6 +58,7 @@ const columns: ColumnType[] = Object.keys(testData[0]).map((key) => {
     title: key as ColumnsKeyType,
     key: key as ColumnsKeyType,
   };
+  // 在 column 中配置当前列是否需要排序
   if (["chinese", "math", "english"].includes(key)) {
     column.sort = true;
   }
@@ -78,8 +79,6 @@ function Table(props: TableType) {
     sortKey?: ColumnsKeyType | "";
     sortType: SortType;
   }>({ sortType: "default" });
-
-  console.log("render");
 
   useEffect(() => {
     if (!sortConfig.sortKey) {

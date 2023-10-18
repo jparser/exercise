@@ -30,11 +30,24 @@ async function addRemote(a: number, b: number) {
 async function add(...inputs: number[]) {
   // 你的实现
   let sum: number = 0;
-
-  for (let i = 0; i < inputs.length; i++) {
-    sum = await addRemote(sum, inputs[i]);
+  const length = inputs.length;
+  if (length === 1) return inputs[0];
+  if (length === 2) {
+    sum = await addRemote(inputs[0], inputs[1]);
+    return sum;
   }
-
+  // 批量调用，减少计算时间
+  const promiseList = [];
+  for (let i = 0; i < length - 1; i++) {
+    if (i % 2 == 0) {
+      promiseList.push(addRemote(inputs[i], inputs[i + 1]));
+    }
+  }
+  if (length % 2 !== 0) {
+    promiseList.push(inputs[length - 1]);
+  }
+  const results = await Promise.all(promiseList);
+  sum = await add(...results);
   return sum;
 }
 
