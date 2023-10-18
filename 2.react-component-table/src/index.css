@@ -1,13 +1,77 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+table {
+  width: 100%;
+  text-align: start;
+  border-radius: 8px 8px 0 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+thead {
+  display: table-header-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+tr {
+  display: table-row;
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+th,
+td {
+  color: rgba(0, 0, 0, 0.88);
+  font-weight: 600;
+  text-align: start;
+
+  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 16px;
+}
+
+th {
+  background: #fafafa;
+}
+
+th .th-sort {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+th .btn {
+  position: relative;
+}
+
+th .btn::after {
+  content: "▲";
+  top: -12px;
+}
+th .btn::before {
+  content: "▼";
+}
+
+th .btn::after,
+th .btn::before {
+  color: rgb(180, 180, 180);
+  font-size: 12px;
+  position: absolute;
+}
+th .ascend::after,
+th .descend::before {
+  color: #1677ff;
 }
