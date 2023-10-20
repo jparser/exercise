@@ -30,6 +30,7 @@ function App() {
       <header className="App-header">
         <div>加法计数器</div>
       </header>
+
       <section className="App-content">
         <button disabled={isCalculating} onClick={() => handleIncrement(1)} >+1</button>
         <button disabled={isCalculating} onClick={() => handleIncrement(2)}>+2</button>
