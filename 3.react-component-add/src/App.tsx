@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './index.css';
 
 async function increaseRemote(a: number) {
@@ -12,15 +12,28 @@ async function increaseRemote(a: number) {
  * 2. 由于是异步相加，自增过程中需要将 button 置为 disabled 状态，不可响应点击；
  */
 function App() {
+  const [count, setCount] = useState(0);
+  const [isCalculating, setIsCalculating] = useState(false);
+
+  const handleIncrement = async (increment: number) => {
+    setIsCalculating(true);
+    let result = count;
+    for (let i = 0; i < increment; i++) {
+      result = await increaseRemote(result);
+    }
+    setIsCalculating(false);
+    setCount(result);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
         <div>加法计数器</div>
       </header>
       <section className="App-content">
-        <button>+1</button>
-        <button>+2</button>
-        <p>数值：{'计算结果'}</p>
+        <button disabled={isCalculating} onClick={() => handleIncrement(1)} >+1</button>
+        <button disabled={isCalculating} onClick={() => handleIncrement(2)}>+2</button>
+        <p>数值：{count}</p>
       </section>
     </div>
   );

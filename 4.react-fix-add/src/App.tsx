@@ -15,24 +15,26 @@ async function increaseRemote(a: number) {
  */
 function App() {
   const [count, setCount] = useState(0);
-  const loading = useRef(false);
+  const [isLoading, setIsLoading] = useState(false)
 
-  const increase = useCallback(async () => {
-    if (loading.current) {
+  const increase = useCallback(async (num: number) => {
+    if (isLoading) {
       return;
     }
-    loading.current = true;
-    const data = await increaseRemote(count);
-    setCount(data);
-    loading.current = false;
+    setIsLoading(true)
+    let result = count
+    for (let i = 0; i < num; i++) {
+      result = await increaseRemote(result);
+    }
+    setCount(result)
+    setIsLoading(false)
   }, [count]);
 
-  const handleClick = (num) => {
+  const handleClick = (num: number) => {
     if (num === 1) {
-      increase();
+      increase(1);
     } else if (num === 2) {
-      increase();
-      increase();
+      increase(2);
     }
   };
 
@@ -41,23 +43,26 @@ function App() {
       <header className="App-header">
         <div>请按照题目要求，修正以下程序</div>
       </header>
+
       <section className="App-content">
         <button
-          disabled={loading.current}
+          disabled={isLoading}
           onClick={() => {
             handleClick(1);
           }}
         >
           +1
         </button>
+
         <button
-          disabled={loading.current}
+          disabled={isLoading}
           onClick={() => {
             handleClick(2);
           }}
         >
           +2
         </button>
+
         <p>数值：{count}</p>
       </section>
     </div>
@@ -65,3 +70,4 @@ function App() {
 }
 
 export default App;
+
