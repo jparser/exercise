@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './index.css';
 
 async function increaseRemote(a: number) {
-  await new Promise((resolve) => setTimeout(resolve, Math.random() * 1e3));
-  return a + 1;
+	await new Promise((resolve) => setTimeout(resolve, Math.random() * 1e3));
+	return a + 1;
 }
 
 /**
@@ -12,18 +12,29 @@ async function increaseRemote(a: number) {
  * 2. 由于是异步相加，自增过程中需要将 button 置为 disabled 状态，不可响应点击；
  */
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <div>加法计数器</div>
-      </header>
-      <section className="App-content">
-        <button>+1</button>
-        <button>+2</button>
-        <p>数值：{'计算结果'}</p>
-      </section>
-    </div>
-  );
+
+	const [increaseValue,setIncreaseValue] = useState(0)
+
+	function increase(value:number){
+		if(value === 1){
+			increaseRemote(increaseValue).then(res => setIncreaseValue(res));
+		}else{
+			increaseRemote(increaseValue).then(res => increaseRemote(res)).then(res => setIncreaseValue(res));
+		}
+	}
+
+	return (
+		<div className="App">
+			<header className="App-header">
+				<div>加法计数器</div>
+			</header>
+			<section className="App-content">
+				<button onClick={() => increase(1)}>+1</button>
+				<button onClick={() => increase(2)}>+2</button>
+				<p>数值：{increaseValue}</p>
+			</section>
+		</div>
+	);
 }
 
 export default App;
