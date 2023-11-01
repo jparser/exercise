@@ -15,23 +15,25 @@ async function increaseRemote(a: number) {
  */
 function App() {
   const [count, setCount] = useState(0);
-  const loading = useRef(false);
+  const [loading, setLoading] = useState(false);
+  const cacheCount = useRef(0)
 
-  const increase = useCallback(async () => {
-    if (loading.current) {
+  const increase = async () => {
+    if (loading) {
       return;
     }
-    loading.current = true;
-    const data = await increaseRemote(count);
+    setLoading(true);
+    const data = await increaseRemote(cacheCount.current);
+    cacheCount.current = data
     setCount(data);
-    loading.current = false;
-  }, [count]);
+    setLoading(false);
+  };
 
-  const handleClick = (num) => {
+  const handleClick = async (num:number) => {
     if (num === 1) {
       increase();
     } else if (num === 2) {
-      increase();
+      await increase();
       increase();
     }
   };
@@ -43,7 +45,7 @@ function App() {
       </header>
       <section className="App-content">
         <button
-          disabled={loading.current}
+          disabled={loading}
           onClick={() => {
             handleClick(1);
           }}
@@ -51,7 +53,7 @@ function App() {
           +1
         </button>
         <button
-          disabled={loading.current}
+          disabled={loading}
           onClick={() => {
             handleClick(2);
           }}
