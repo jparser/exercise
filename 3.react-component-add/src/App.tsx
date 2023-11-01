@@ -13,13 +13,20 @@ async function increaseRemote(a: number) {
  */
 function App() {
 
-	const [increaseValue,setIncreaseValue] = useState(0)
+	const [increaseValue, setIncreaseValue] = useState(0);
+	const [loading, setLoading] = useState(false);
 
-	function increase(value:number){
-		if(value === 1){
-			increaseRemote(increaseValue).then(res => setIncreaseValue(res));
-		}else{
-			increaseRemote(increaseValue).then(res => increaseRemote(res)).then(res => setIncreaseValue(res));
+	function increase(value: number) {
+		setLoading(true);
+		if (value === 1) {
+			increaseRemote(increaseValue)
+				.then(res => setIncreaseValue(res))
+				.finally(() => setLoading(false));
+		} else {
+			increaseRemote(increaseValue)
+				.then(res => increaseRemote(res))
+				.then(res => setIncreaseValue(res))
+				.finally(() => setLoading(false));
 		}
 	}
 
@@ -29,8 +36,8 @@ function App() {
 				<div>加法计数器</div>
 			</header>
 			<section className="App-content">
-				<button onClick={() => increase(1)}>+1</button>
-				<button onClick={() => increase(2)}>+2</button>
+				<button disabled={loading} onClick={() => increase(1)}>+1</button>
+				<button disabled={loading} onClick={() => increase(2)}>+2</button>
 				<p>数值：{increaseValue}</p>
 			</section>
 		</div>
