@@ -1,0 +1,41 @@
+/* 表格外框 */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* 标题行 */
+th {
+  background-color: #f2f2f2;
+  text-align: left;
+  padding: 15px;
+  position: relative;
+  cursor: pointer;
+}
+
+.arrow-container {
+  display: inline-block;
+  margin-left: 5px; /* 设置适当的左边距 */
+  vertical-align: middle; /* 垂直居中对齐箭头 */
+  position: absolute;
+  right: 10px;
+  top: 14px;
+  line-height: 12px;
+}
+
+.blue-arrow {
+  color: blue;
+}
+
+.gray-arrow {
+  color: gray;
+}
+
+/* 数据单元格 */
+td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 8px;
+}
+
+
