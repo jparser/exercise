@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 /**
@@ -42,11 +42,61 @@ const testData: {
     english: 89,
   },
 ];
+
+function Table({data, onSort} : any){
+  const [sortedOrder, setSortedOrder] = useState([]);
+  const [sortedData, setSortedData] = useState(data);
+
+  const handleSort = (column:any) => {
+    const isAcs = sortedOrder[0] === column && sortedOrder[1] === 'acs';
+    const newSortOrder: any = isAcs ? [column, 'desc'] : [column, 'acs'];
+    setSortedOrder(newSortOrder);
+
+    const sorted = [...sortedData].sort((a, b) => {
+      if(isAcs){
+        return a[column] - b[column];
+      }
+      return b[column] - a[column];
+    })
+
+    setSortedData(sorted);
+    onSort(sorted);
+  };
+
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th onClick={() => handleSort('name')}>Name</th>
+          <th onClick={() => handleSort('chinese')}>Chinese</th>
+          <th onClick={() => handleSort('math')}>Math</th>
+          <th onClick={() => handleSort('english')}>English</th>
+        </tr>
+      </thead>
+      <tbody>
+      {sortedData.map((item: any, idx: any) => (
+        <tr key={idx}>
+          <td>{item.name}</td>
+          <td>{item.chinese}</td>
+          <td>{item.math}</td>
+          <td>{item.english}</td>
+        </tr>
+      ))}
+      </tbody>
+    </table>
+  )
+}
+
 function App() {
+  const handleSort = (sortedData:[]) => {
+    console.log('sorted data',sortedData);
+  };
+
   return (
     <div className="App">
       <h1>Table 组件</h1>
-      <div>使用 testData 数据在这里渲染实现的 Table 组件</div>
+      {/* <div>使用 testData 数据在这里渲染实现的 Table 组件</div> */}
+      <Table data={testData} onSort={handleSort} />
     </div>
   );
 }
