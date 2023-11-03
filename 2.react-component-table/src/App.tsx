@@ -46,12 +46,16 @@ const testData: {
 function Table({data, onSort} : any){
   const [sortedOrder, setSortedOrder] = useState([]);
   const [sortedData, setSortedData] = useState(data);
+  const [isNot, setIsNot] = useState(true); // 切换箭头
 
-  const handleSort = (column:any) => {
-    const isAcs = sortedOrder[0] === column && sortedOrder[1] === 'acs';
-    const newSortOrder: any = isAcs ? [column, 'desc'] : [column, 'acs'];
+  const handleSort = (column: string) => {
+    console.log('column', column)
+    const isAcs = sortedOrder[0] === column && sortedOrder[1] === 'asc';
+    console.log('isAcs', isAcs)
+    const newSortOrder: any = isAcs ? [column, 'desc'] : [column, 'asc'];
+    console.log('newSortOrder', newSortOrder)
     setSortedOrder(newSortOrder);
-
+    setIsNot(isAcs);
     const sorted = [...sortedData].sort((a, b) => {
       if(isAcs){
         return a[column] - b[column];
@@ -63,14 +67,34 @@ function Table({data, onSort} : any){
     onSort(sorted);
   };
 
+
   return (
     <table>
       <thead>
         <tr>
           <th onClick={() => handleSort('name')}>Name</th>
-          <th onClick={() => handleSort('chinese')}>Chinese</th>
-          <th onClick={() => handleSort('math')}>Math</th>
-          <th onClick={() => handleSort('english')}>English</th>
+          <th onClick={() => handleSort('chinese')}>
+            Chinese
+            <div className='arrow-container'>
+              <div className={isNot ? 'blue-arrow' : 'gray-arrow'}>▲</div>
+              <div className={!isNot ? 'blue-arrow' : 'gray-arrow'}>▼</div>
+            </div>
+          </th>
+          <th onClick={() => handleSort('math')}>
+            Math
+            <div className='arrow-container'>
+              <div className={isNot ? 'blue-arrow' : 'gray-arrow'}>▲</div>
+              <div className={!isNot ? 'blue-arrow' : 'gray-arrow'}>▼</div>
+            </div>
+           
+          </th>
+          <th onClick={() => handleSort('english')}>
+            English
+            <div className='arrow-container'>
+              <div className={isNot ? 'blue-arrow' : 'gray-arrow'}>▲</div>
+              <div className={!isNot ? 'blue-arrow' : 'gray-arrow'}>▼</div>
+            </div>
+          </th>
         </tr>
       </thead>
       <tbody>
