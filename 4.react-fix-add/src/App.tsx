@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback } from 'react';
-import './index.css';
+import './App.css';
 
 async function increaseRemote(a: number) {
   await new Promise((resolve) => setTimeout(resolve, Math.random() * 1e3));
@@ -27,12 +27,14 @@ function App() {
     loading.current = false;
   }, [count]);
 
-  const handleClick = (num) => {
+  const handleClick = async (num:Number) => {
     if (num === 1) {
-      increase();
+      await increase();
     } else if (num === 2) {
-      increase();
-      increase();
+      await increase();
+      await increase();
+      // 问题：在点击+2的时候调用了 increase 函数两次，这个函数中没有等待第一次的异步操作完成就立即进行第二次操作。这可能会导致结果不对。
+      // 方案：可以使用 async await 来确保每次点击都等待上一个操作完成后再执行下一个操作。
     }
   };
 
